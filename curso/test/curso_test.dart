@@ -1,4 +1,4 @@
-import 'package:curso/curso.dart';
+import 'package:curso/cli.dart';
 import 'package:test/test.dart';
 
 void main() {
