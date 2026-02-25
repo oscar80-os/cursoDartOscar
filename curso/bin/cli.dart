@@ -1,25 +1,21 @@
 import 'dart:io';
+import 'package:http/http.dart' as http;
 
 // El punto de entrada que Dart busca para ejecutar el programa
 void main(List<String> arguments) {
   searchWikipedia(arguments);
 }
 
-void searchWikipedia(List<String>? arguments) {
-  final String articleTitle;
+Future<String> getWikipediaArticle(String articleTitle) async {
+  final url = Uri.https(
+    'en.wikipedia.org',
+    '/api/rest_v1/page/summary/$articleTitle',
+  );
+  final response = await http.get(url);
 
-  // If the user didn't pass in arguments, request an article title.
-  if (arguments == null || arguments.isEmpty) {
-    print('Please provide an article title.');
-    // Await input and provide a default empty string if the input is null.
-    articleTitle = stdin.readLineSync() ?? '';
-  } else {
-    // Otherwise, join the arguments into the CLI into a single string
-    articleTitle = arguments.join(' ');
+  if (response.statusCode == 200) {
+    return response.body;
   }
 
-  print('Looking up articles about "$articleTitle". Please wait.');
-  print('Here ya go!');
-  print('(Pretend this is an article about "$articleTitle")');
+  return 'Error: Failed to fetch article "$articleTitle". Status code: ${response.statusCode}';
 }
-
