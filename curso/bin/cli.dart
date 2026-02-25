@@ -1,16 +1,25 @@
-const version = '0.0.1';
+import 'dart:io';
+
+// El punto de entrada que Dart busca para ejecutar el programa
 void main(List<String> arguments) {
-    if (arguments.isEmpty || arguments.first == 'help') {
-    printUsage(); // Change this from 'Hello, Dart!'
-  } else if (arguments.first == 'version') {
-    print('curso CLI version $version');
-  } else {
-    printUsage(); // Catch-all for any unrecognized command.
-  }
+  searchWikipedia(arguments);
 }
 
-void printUsage() {
-  print(
-    "The following commands are valid: 'help', 'version', 'search <ARTICLE-TITLE>'"
-  );
+void searchWikipedia(List<String>? arguments) {
+  final String articleTitle;
+
+  // If the user didn't pass in arguments, request an article title.
+  if (arguments == null || arguments.isEmpty) {
+    print('Please provide an article title.');
+    // Await input and provide a default empty string if the input is null.
+    articleTitle = stdin.readLineSync() ?? '';
+  } else {
+    // Otherwise, join the arguments into the CLI into a single string
+    articleTitle = arguments.join(' ');
+  }
+
+  print('Looking up articles about "$articleTitle". Please wait.');
+  print('Here ya go!');
+  print('(Pretend this is an article about "$articleTitle")');
 }
+
